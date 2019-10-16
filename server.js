@@ -7,8 +7,6 @@ const path = require("path");
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, "index.html");
 
-const wss = new SocketServer({ server });
-
 const server = express()
   .use((req, res) => res.sendFile(INDEX))
   .get("/", () => {
@@ -17,10 +15,14 @@ const server = express()
   .post("/", () => {
     wss.clients.forEach(client => {
       console.log("message sent");
+      console.log(typeof client);
       client.send(new Date().toTimeString());
     });
+    console.log("received post");
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+const wss = new SocketServer({ server });
 
 wss.on("connection", ws => {
   console.log("Client connected");
