@@ -13,12 +13,12 @@ const server = express()
     console.log("received GET request");
   })
   .post("/", () => {
+    console.log("received post");
     wss.clients.forEach(client => {
       console.log("message sent");
       console.log(typeof client);
       client.send(new Date().toTimeString());
     });
-    console.log("received post");
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
