@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, "index.html");
 const app = express();
 
-const wss = new SocketServer({ app });
+const wss = new SocketServer({ server: app });
 
 wss.on("connection", ws => {
   console.log("Client connected");
