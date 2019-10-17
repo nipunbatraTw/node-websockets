@@ -10,15 +10,16 @@ const INDEX = path.join(__dirname, "index.html");
 let wss;
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX))
-  .get("/", () => {
+  .get("/", (req, res) => {
     console.log("received GET request");
+    res.sendFile(INDEX);
   })
-  .post("/", () => {
+  .post("/", (req, res) => {
     console.log("received POST request");
     wss.clients.forEach(client => {
       client.send(new Date().toTimeString());
     });
+    res.sendFile(INDEX);
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
