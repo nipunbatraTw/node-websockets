@@ -17,6 +17,8 @@ const server = express()
   .post("/", (req, res) => {
     console.log("received POST request");
     wss.clients.forEach(client => {
+      console.log("SEND TO DEVICE");
+      console.log(wss.clients);
       client.send(new Date().toTimeString());
     });
     res.sendFile(INDEX);
