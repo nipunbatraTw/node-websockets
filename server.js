@@ -18,7 +18,6 @@ const server = express()
     console.log("received POST request");
     wss.clients.forEach(client => {
       console.log("SEND TO DEVICE");
-      console.log(wss.clients);
       client.send(new Date().toTimeString());
     });
     res.sendFile(INDEX);
@@ -31,9 +30,3 @@ wss.on("connection", ws => {
   console.log("Client connected");
   ws.on("close", () => console.log("Client disconnected"));
 });
-
-setInterval(() => {
-  wss.clients.forEach(client => {
-    client.send(new Date().toTimeString());
-  });
-}, 60000);
