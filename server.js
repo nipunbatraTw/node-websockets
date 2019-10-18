@@ -37,3 +37,12 @@ wss.on("connection", (ws, req) => {
   });
   ws.on("close", () => console.log("Client disconnected"));
 });
+
+function sendToClientById(id) {
+  wss.clients.forEach(client => {
+    if (client.id === id) {
+      console.log("SENDING TO CLIENT WITH ID = " + id);
+      client.send("message to client id");
+    }
+  });
+}
