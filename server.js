@@ -3,6 +3,7 @@
 const express = require("express");
 const SocketServer = require("ws").Server;
 const path = require("path");
+const url = require("url");
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, "index.html");
@@ -19,6 +20,7 @@ const server = express()
     wss.clients.forEach(client => {
       console.log("SEND TO DEVICE");
       client.send(new Date().toTimeString());
+      console.log("clientId=" + client.clientId);
     });
     res.sendFile(INDEX);
   })
@@ -26,7 +28,11 @@ const server = express()
 
 wss = new SocketServer({ server });
 
-wss.on("connection", ws => {
+wss.on("connection", (ws, req) => {
   console.log("Client connected");
+
+  const parameters = url.parse(req.url, true);
+
+  ws.clientId = parameters.query.clientId;
   ws.on("close", () => console.log("Client disconnected"));
 });
