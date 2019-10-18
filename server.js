@@ -20,7 +20,7 @@ const server = express()
     wss.clients.forEach(client => {
       console.log("SEND TO DEVICE");
       client.send(new Date().toTimeString());
-      console.log("clientId=" + client.clientId);
+      console.log("clientId=" + client.id);
     });
     res.sendFile(INDEX);
   })
@@ -32,6 +32,8 @@ wss.on("connection", (ws, req) => {
   console.log("Client connected");
   ws.on("message", function(message) {
     console.log("received: %s", message);
+    const token = JSON.parse(message).token;
+    ws.id = token;
   });
   ws.on("close", () => console.log("Client disconnected"));
 });
