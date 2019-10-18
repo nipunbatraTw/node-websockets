@@ -30,9 +30,8 @@ wss = new SocketServer({ server });
 
 wss.on("connection", (ws, req) => {
   console.log("Client connected");
-
-  const parameters = url.parse(req.url, true);
-
-  ws.clientId = parameters.query.clientId;
+  ws.on("message", function(message) {
+    console.log("received: %s", message);
+  });
   ws.on("close", () => console.log("Client disconnected"));
 });
